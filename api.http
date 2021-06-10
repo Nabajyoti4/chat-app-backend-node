@@ -1,0 +1,24 @@
+# POST http://127.0.0.1:3000/auth/login HTTP/1.1
+# content-type: application/json
+
+# {
+#     "email" : "sirnaba@gmail.com",
+#     "password" : "naba"
+# }
+
+
+
+# POST http://127.0.0.1:3000/auth/register HTTP/1.1
+# content-type: application/json
+
+# {
+#     "name": "Nabajyoti",
+#     "email" : "sirnaba@gmail.com",
+#     "password" : "naba",
+#     "phone": 8474840292
+# }
+
+
+# Get http://127.0.0.1:3000/auth/chat HTTP/1.1
+
+# Get http://127.0.0.1:3002/chat/users HTTP/1.1
