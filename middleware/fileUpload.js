@@ -1,5 +1,5 @@
 const multer = require("multer");
-console.log("multer");
+
 //multer storage
 const storage = multer.diskStorage({
   destination: "G:/Chat-App/whatspp-mern-frontend/public/profile",

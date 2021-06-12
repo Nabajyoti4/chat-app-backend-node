@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
-const Chat = require("./model/chat");
 
 const app = express();
 app.use(bodyParser.json());
