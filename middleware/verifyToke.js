@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/user");
 
 const auth = async (req, res, next) => {
+  console.log(req.cookies);
   const token = req.cookies.jwtToken;
 
   if (!token) return res.status(401).send("Access Denied");

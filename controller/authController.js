@@ -13,6 +13,7 @@ exports.signin = async (req, res) => {
 
   try {
     const userExists = await User.findOne({ email: req.body.email });
+
     if (!userExists) {
       return res.status(400).send("Invalid Credentials");
     }
@@ -54,28 +55,30 @@ exports.signin = async (req, res) => {
 exports.signup = async (req, res) => {
   //check if user already exists in db or not
 
-  const userExists = await User.findOne({ email: req.body.email });
-  if (userExists) {
-    return res.send({
-      error: "User already exsist",
-    });
-  }
-
-  //passord hash
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(req.body.password, salt);
-
-  //create user object
-  const user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    phone: req.body.phone,
-    avatar: req.file.filename,
-    password: hashPassword,
-  });
-
-  //save new user in database
   try {
+    const userExists = await User.findOne({ email: req.body.email });
+    if (userExists) {
+      return res.send({
+        error: "User already exsist",
+      });
+    }
+
+    //passord hash
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+    console.log(req.file.filename);
+    //create user object
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      avatar: req.file.filename,
+      password: hashPassword,
+    });
+
+    //save new user in database
+
     const result = await user.save();
     res.send(result);
   } catch (err) {

@@ -7,11 +7,13 @@ const { Server } = require("socket.io");
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors({ credentials: true, origin: process.env.URL }));
-app.use(cookieParser());
-
 //dot env
 dotenv.config({ path: "./config.env" });
+//url
+const URL = process.env.URL;
+
+app.use(cors({ credentials: true, origin: URL }));
+app.use(cookieParser());
 
 // databse connecti
 require("./db/conn");
@@ -37,7 +39,7 @@ const server = app.listen(PORT, () => console.log(`Listening port ${PORT}`));
 
 //scoket
 
-const io = new Server(server, { cors: { origin: process.env.URL } });
+const io = new Server(server, { cors: { origin: URL } });
 
 //users
 
