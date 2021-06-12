@@ -31,8 +31,6 @@ exports.signin = async (req, res) => {
     //jwt token
     const token = await userExists.generateToken();
 
-    console.log(process.env.URL);
-
     res.status(200).json({
       message: "user signed in",
       token: token,
@@ -64,7 +62,6 @@ exports.signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-    console.log(req.file.filename);
     //create user object
     const user = new User({
       name: req.body.name,
