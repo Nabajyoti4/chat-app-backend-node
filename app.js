@@ -7,7 +7,7 @@ const { Server } = require("socket.io");
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: process.env.URL }));
 app.use(cookieParser());
 
 //dot env
@@ -36,7 +36,8 @@ const PORT = process.env.PORT;
 const server = app.listen(PORT, () => console.log(`Listening port ${PORT}`));
 
 //scoket
-const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
+
+const io = new Server(server, { cors: { origin: process.env.URL } });
 
 //users
 
