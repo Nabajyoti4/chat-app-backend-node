@@ -35,8 +35,9 @@ exports.signin = async (req, res) => {
     //cookie
     res.cookie("jwtToken", token, {
       expires: new Date(Date.now() + 2589200000),
-
+      domain: process.env.URL,
       secure: true,
+      sameSite: "none",
     });
 
     res.status(200).json({
