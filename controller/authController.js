@@ -32,16 +32,10 @@ exports.signin = async (req, res) => {
     const token = await userExists.generateToken();
 
     console.log(process.env.URL);
-    //cookie
-    res.cookie("jwtToken", token, {
-      expires: new Date(Date.now() + 2589200000),
-      domain: process.env.URL,
-      secure: true,
-      sameSite: "none",
-    });
 
     res.status(200).json({
       message: "user signed in",
+      token: token,
     });
 
     // res.header("auth-token", token).send(token);
