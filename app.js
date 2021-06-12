@@ -21,6 +21,10 @@ const authRoutes = require("./routes/auth");
 const chatRoutes = require("./routes/chat");
 const groupRoutes = require("./routes/group");
 
+app.get("/", (req, res) => {
+  res.json("Api");
+});
+
 app.use("/auth", authRoutes);
 app.use("/chat", chatRoutes);
 app.use("/group", groupRoutes);
