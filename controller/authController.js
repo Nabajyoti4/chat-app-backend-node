@@ -15,7 +15,7 @@ exports.signin = async (req, res) => {
     const userExists = await User.findOne({ email: req.body.email });
 
     if (!userExists) {
-      return res.status(400).send("Invalid Credentials");
+      return res.status(404).json("Invalid Credentials");
     }
 
     //passord check
@@ -25,20 +25,22 @@ exports.signin = async (req, res) => {
     );
 
     if (!checkPassword) {
-      return res.status(400).send("Passowrd wrong");
+      return res.status(404).json("Invalid Credentials");
     }
 
     //jwt token
     const token = await userExists.generateToken();
 
     res.status(200).json({
-      message: "user signed in",
+      message: "Login Succesfull",
       token: token,
     });
 
     // res.header("auth-token", token).send(token);
   } catch (err) {
-    console.log(err);
+    res.status(400).json({
+      message: "Something Went Wrong Try again",
+    });
   }
 };
 
@@ -52,6 +54,7 @@ exports.signup = async (req, res) => {
 
   try {
     const userExists = await User.findOne({ email: req.body.email });
+
     if (userExists) {
       return res.send({
         error: "User already exsist",
@@ -72,11 +75,15 @@ exports.signup = async (req, res) => {
     });
 
     //save new user in database
-
     const result = await user.save();
-    res.send(result);
+
+    res.status(201).json({
+      message: "Your account is being Created succesfully",
+    });
   } catch (err) {
-    console.log(err);
+    res.status(400).json({
+      message: "Something Went Wrong Try again",
+    });
   }
 };
 

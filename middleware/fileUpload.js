@@ -4,7 +4,7 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: "G:/Chat-App/whatspp-mern-frontend/public/profile",
   filename: (req, file, callback) => {
-    callback(null, file.originalname);
+    callback(null, Date.now() + file.originalname);
   },
 });
 

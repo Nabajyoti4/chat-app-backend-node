@@ -9,7 +9,14 @@ const mongoose = require("mongoose");
  */
 exports.createGroup = async (req, res) => {
   const { creator, members, room } = req.body;
-  console.log(creator, members, room);
+
+  //check for same group name
+  const grp = await Group.findOne({ room: room });
+  if (grp) {
+    return res.status(409).json({
+      message: "Group Name Already Exists",
+    });
+  }
 
   let memberId = [];
 
@@ -31,15 +38,20 @@ exports.createGroup = async (req, res) => {
     memberId.forEach(async (member) => {
       try {
         grp.members.push(member);
-        await grp.save();
       } catch (err) {
         console.log(err);
       }
     });
 
-    console.log(response);
+    await grp.save();
+
+    return res.status(200).json({
+      message: "Group Created",
+    });
   } catch (err) {
-    console.log(err);
+    return res.status(400).json({
+      message: err,
+    });
   }
 };
 
@@ -74,7 +86,7 @@ exports.getGroups = async (req, res) => {
       { creator: id },
       { "members.member": id },
     ]);
-    console.log(groups);
+
     res.status(200).json(groups);
   } catch (err) {
     res.status(200).json(err);

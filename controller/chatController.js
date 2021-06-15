@@ -21,7 +21,15 @@ exports.users = async (req, res) => {
  */
 exports.addFriend = async (req, res) => {
   const { sender, recevier, room } = req.body;
-  console.log(sender, recevier, room);
+
+  const friend = await Chat.findOne({ room: room });
+
+  if (friend) {
+    return res.status(409).json({
+      message: "User already your friend",
+    });
+  }
+
   const chat = new Chat({
     sender: sender,
     recevier: recevier,
