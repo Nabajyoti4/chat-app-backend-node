@@ -38,9 +38,14 @@ exports.addFriend = async (req, res) => {
 
   try {
     const response = await chat.save();
-    res.status(200).json("Friend added");
+
+    res.status(200).json({
+      message: "Friend added",
+    });
   } catch (err) {
-    res.status(200).json("Error Occured");
+    res.status(400).json({
+      message: "Error occured",
+    });
   }
 };
 
@@ -54,8 +59,8 @@ exports.getFriends = async (req, res) => {
   const friends = await Chat.find({
     $or: [{ sender: id }, { recevier: id }],
   })
-    .populate("recevier", ["name", "avatar"])
-    .populate("sender", ["name", "avatar"]);
+    .populate("recevier", ["name", "avatar", "logined"])
+    .populate("sender", ["name", "avatar", "logined"]);
   res.status(200).json(friends);
 };
 

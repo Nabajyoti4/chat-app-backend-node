@@ -60,6 +60,8 @@ const io = new Server(server, { cors: { origin: URL } });
 // io.emit send message to all connected clients also the sender
 // socket.broadcast.emit broadcast the message to all connections except the sender
 io.on("connection", function (socket) {
+  console.log("socket connected" + socket.id);
+
   socket.on("user", (user) => {
     console.log("eamil" + user.email);
   });

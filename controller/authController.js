@@ -31,6 +31,10 @@ exports.signin = async (req, res) => {
     //jwt token
     const token = await userExists.generateToken();
 
+    await userExists.updateOne({
+      logined: true,
+    });
+
     res.status(200).json({
       message: "Login Succesfull",
       token: token,
@@ -77,8 +81,6 @@ exports.signup = async (req, res) => {
     //save new user in database
     const result = await user.save();
 
-    console.log(result);
-
     res.status(200).json({
       message: "Your account is being Created succesfully",
     });
@@ -96,5 +98,6 @@ exports.chat = async (req, res) => {
     phone: req.authUser.phone,
     email: req.authUser.email,
     avatar: req.authUser.avatar,
+    logined: req.authUser.logined,
   });
 };
