@@ -22,6 +22,14 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  status: {
+    logined: {
+      type: Boolean,
+    },
+    lastOnline: {
+      type: Date,
+    },
+  },
   password: {
     type: String,
     required: true,
