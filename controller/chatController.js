@@ -59,8 +59,8 @@ exports.getFriends = async (req, res) => {
   const friends = await Chat.find({
     $or: [{ sender: id }, { recevier: id }],
   })
-    .populate("recevier", ["name", "avatar", "logined"])
-    .populate("sender", ["name", "avatar", "logined"]);
+    .populate("recevier", ["name", "avatar", "logined", "lastOnline"])
+    .populate("sender", ["name", "avatar", "logined", "lastOnline"]);
   res.status(200).json(friends);
 };
 

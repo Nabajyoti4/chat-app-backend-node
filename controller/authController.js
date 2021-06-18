@@ -91,6 +91,11 @@ exports.signup = async (req, res) => {
   }
 };
 
+/**
+ * send user data on login
+ * @param {*} req
+ * @param {*} res
+ */
 exports.chat = async (req, res) => {
   res.status(200).json({
     id: req.authUser._id,
@@ -100,4 +105,14 @@ exports.chat = async (req, res) => {
     avatar: req.authUser.avatar,
     logined: req.authUser.logined,
   });
+};
+
+/**
+ * logout user on disocnnect and set logined to false
+ * @param {*} req
+ * @param {*} res
+ */
+exports.logout = async (req, res) => {
+  const email = req.query.email;
+  console.log(email);
 };
