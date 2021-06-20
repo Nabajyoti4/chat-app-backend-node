@@ -65,6 +65,24 @@ exports.getFriends = async (req, res) => {
 };
 
 /**
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.getFriend = async (req, res) => {
+  const id = req.query.id;
+  console.log(id);
+  try {
+    const friend = await User.findById(id);
+    res.status(200).json(friend);
+  } catch (err) {
+    res.status(404).json({
+      message: "Friend not found",
+    });
+  }
+};
+
+/**
  * Push the chat in chats array
  * @param {*} req
  * @param {*} res

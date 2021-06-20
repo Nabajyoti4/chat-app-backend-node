@@ -6,6 +6,7 @@ const auth = require("../middleware/verifyToke");
 router.get("/users/", auth, chatController.users);
 router.post("/add-friend/", auth, chatController.addFriend);
 router.get("/get-friends/", auth, chatController.getFriends);
+router.get("/get-friend/", auth, chatController.getFriend);
 router.post("/store-chat/", auth, chatController.storeChat);
 router.get("/get-chats/", auth, chatController.getChats);
 

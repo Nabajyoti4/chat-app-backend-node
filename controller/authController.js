@@ -113,6 +113,21 @@ exports.chat = async (req, res) => {
  * @param {*} res
  */
 exports.logout = async (req, res) => {
-  const email = req.query.email;
-  console.log(email);
+  const id = req.query.id;
+  console.log(id);
+  try {
+    const user = await User.findById(id);
+    user.logined = false;
+    user.lastOnline = Date.now();
+    await user.save();
+
+    res.status(200).json({
+      lastOnline: user.lastOnline,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      message: "Something went wrong",
+    });
+  }
 };

@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
+const safe = require("safe-await");
 
 //model
 const User = require("./model/user");
@@ -70,19 +71,42 @@ io.on("connection", function (socket) {
   // when a new user join
   // the email and the socket id of the user id push into the sockets array
   // if the user already exists then the socket id of the user is replaces with the help of email
-  socket.on("user", (user) => {
+  socket.on("user", async (user) => {
     if (user.email && socket.id) {
-      const email = sockets.findIndex((obj) => obj.email === user.email);
+      const emailExists = sockets.findIndex((obj) => obj.email === user.email);
 
-      if (email >= 0) {
-        sockets[email].id = socket.id;
+      if (emailExists >= 0) {
+        sockets[emailExists].id = socket.id;
+        const [error, user] = await safe(
+          User.findOne({
+            email: sockets[emailExists].email,
+          })
+        );
+        if (error) throw new Error(error);
+
+        user.logined = true;
+
+        const [error2, res] = await safe(user.save());
+        if (error2) throw new Error(error2);
       } else {
+        const [error, userData] = await safe(
+          User.findOne({
+            email: user.email,
+          })
+        );
+        if (error) throw new Error(error);
+
+        userData.logined = true;
+
+        const [error2, res] = await safe(userData.save());
+        if (error2) throw new Error(error2);
         sockets.push({
           id: socket.id,
           email: user.email,
         });
       }
     }
+    io.emit("logined");
   });
 
   // join the user to a room to chat with other user or group
@@ -99,24 +123,33 @@ io.on("connection", function (socket) {
 
   // if a user close the browser , logout , or refresh the page
   // remove socket from sockets array
-  // set user logined status to false and set the last onlien state
-  socket.on("disconnect", async function () {
+  // set user logined status to false and set the last online state
+  socket.on("disconnect", function () {
+    console.log("users 1 " + sockets);
     console.log(socket.id + " : disconnected");
     const index = sockets.findIndex((obj) => obj.id === socket.id);
+    console.log(socket.id + " : disconnected again" + "index " + index);
+    console.log("users 2" + sockets);
 
     if (index >= 0) {
-      try {
-        const user = await User.findOne({ email: sockets[index].email });
-        user.logined = false;
-        user.lastOnline = Date.now();
-        user.save();
-      } catch (err) {
-        console.log(err);
-      }
+      User.findOneAndUpdate(
+        { email: sockets[index].email },
+        {
+          logined: false,
+          lastOnline: Date.now(),
+        },
+        { new: true }
+      )
+        .then((user) => {
+          console.log(user.logined);
+          sockets.splice(index, 1);
+        })
 
-      sockets.splice(index, 1);
+        .catch((err) => console.log(err));
+
+      console.log("save");
     }
 
-    socket.emit("user disconnected");
+    io.emit("logout");
   });
 });
