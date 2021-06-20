@@ -60,7 +60,8 @@ exports.getFriends = async (req, res) => {
     $or: [{ sender: id }, { recevier: id }],
   })
     .populate("recevier", ["name", "avatar", "logined", "lastOnline"])
-    .populate("sender", ["name", "avatar", "logined", "lastOnline"]);
+    .populate("sender", ["name", "avatar", "logined", "lastOnline"])
+    .populate("chats.sender", "name");
   res.status(200).json(friends);
 };
 
@@ -71,7 +72,7 @@ exports.getFriends = async (req, res) => {
  */
 exports.getFriend = async (req, res) => {
   const id = req.query.id;
-  console.log(id);
+  console.log("fectching fried for fectfriendthunk" + id);
   try {
     const friend = await User.findById(id);
     res.status(200).json(friend);
@@ -111,7 +112,9 @@ exports.storeChat = async (req, res) => {
 exports.getChats = async (req, res) => {
   const room = req.query.room;
   try {
-    const chat = await Chat.findOne({ room: room }).select("chats");
+    const chat = await Chat.findOne({ room: room })
+      .populate("chats.sender", "name")
+      .select("chats");
     console.log("All chats triggered");
     res.status(200).json(chat);
   } catch (err) {

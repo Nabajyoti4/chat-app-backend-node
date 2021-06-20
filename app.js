@@ -38,6 +38,7 @@ require("./db/conn");
 const authRoutes = require("./routes/auth");
 const chatRoutes = require("./routes/chat");
 const groupRoutes = require("./routes/group");
+const userRoutes = require("./routes/user");
 
 app.get("/", (req, res) => {
   res.json("Api");
@@ -46,6 +47,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/chat", chatRoutes);
 app.use("/group", groupRoutes);
+app.use("/user", userRoutes);
 
 // Env variables
 const PORT = process.env.PORT;

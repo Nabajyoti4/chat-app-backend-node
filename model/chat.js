@@ -19,7 +19,8 @@ const ChatSchema = new mongoose.Schema({
   chats: [
     {
       sender: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
       },
       message: {
         type: String,
