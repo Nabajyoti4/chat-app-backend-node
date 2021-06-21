@@ -5,12 +5,14 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
 const safe = require("safe-await");
+const path = require("path");
 
 //model
 const User = require("./model/user");
 
 const app = express();
 app.use(bodyParser.json());
+app.use("/public/", express.static(path.join(__dirname, "public")));
 //dot env
 dotenv.config({ path: "./config.env" });
 //url
