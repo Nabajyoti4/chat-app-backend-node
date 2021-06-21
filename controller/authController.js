@@ -74,7 +74,7 @@ exports.signup = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
-      avatar: req.file.filename,
+      avatar: req.file.filepath,
       password: hashPassword,
     });
 
