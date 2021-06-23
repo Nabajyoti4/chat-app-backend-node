@@ -43,9 +43,9 @@ exports.putAvatar = async (req, res) => {
     });
   }
 
-  if (user.avatar) {
-    fs.unlinkSync(user.avatar);
-  }
+  // if (user.avatar) {
+  //   fs.unlinkSync(user.avatar);
+  // }
 
   user.avatar = req.file.path;
 
